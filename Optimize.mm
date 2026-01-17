@@ -12,12 +12,15 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        self.userInteractionEnabled = NO;
+        // Essential: Allow the view to catch taps for the button/menu
+        self.userInteractionEnabled = YES; 
+        self.backgroundColor = [UIColor clearColor];
         [self setupUI];
     }
     return self;
 }
 
+// Logic to write FastFlags to Roblox Library
 - (void)setFlag:(NSString *)k v:(id)v {
     NSString *p = [[NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"ClientSettings"];
     NSString *f = [p stringByAppendingPathComponent:@"ClientAppSettings.json"];
@@ -47,25 +50,32 @@
 }
 
 - (void)setupUI {
-    self.btn = [[UIButton alloc] initWithFrame:CGRectMake(50, 150, 55, 55)];
+    // 1. The Circle Button (𝔳)
+    self.btn = [[UIButton alloc] initWithFrame:CGRectMake(50, 100, 55, 55)];
     self.btn.backgroundColor = [UIColor colorWithRed:0.3 green:0.0 blue:0.6 alpha:0.9];
     self.btn.layer.cornerRadius = 27.5;
     self.btn.layer.borderWidth = 1.5;
-    self.btn.layer.borderColor = [UIColor purpleColor].CGColor;
+    self.btn.layer.borderColor = [UIColor whiteColor].CGColor;
     [self.btn setTitle:@"𝔳" forState:UIControlStateNormal];
     self.btn.titleLabel.font = [UIFont systemFontOfSize:26 weight:UIFontWeightBold];
-    [self.btn addTarget:self action:@selector(toggle) forControlEvents:UIControlEventTouchUpInside];
-    [self.btn addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(pan:)]];
+    
+    // Use both TouchUpInside and a dedicated action
+    [self.btn addTarget:self action:@selector(toggleMenu) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    [self.btn addGestureRecognizer:pan];
     [self addSubview:self.btn];
 
+    // 2. The Menu Panel
     self.menu = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 260, 380)];
-    self.menu.center = CGPointMake([UIScreen mainScreen].bounds.size.width/2, [UIScreen mainScreen].bounds.size.height/2);
-    self.menu.backgroundColor = [UIColor colorWithRed:0.05 green:0.05 blue:0.07 alpha:0.95];
+    self.menu.center = CGPointMake(UIScreen.mainScreen.bounds.size.width/2, UIScreen.mainScreen.bounds.size.height/2);
+    self.menu.backgroundColor = [UIColor colorWithRed:0.02 green:0.02 blue:0.04 alpha:0.98];
     self.menu.layer.cornerRadius = 20;
     self.menu.layer.borderColor = [UIColor systemPurpleColor].CGColor;
     self.menu.layer.borderWidth = 2;
-    self.menu.alpha = 0;
-    self.menu.contentSize = CGSizeMake(260, 520);
+    self.menu.alpha = 0; // Starts hidden
+    self.menu.hidden = YES;
+    self.menu.contentSize = CGSizeMake(260, 500);
 
     UILabel *h = [[UILabel alloc] initWithFrame:CGRectMake(0, 15, 260, 30)];
     h.text = @"VOIDSTRAP MOBILE";
@@ -74,28 +84,44 @@
     h.font = [UIFont fontWithName:@"Courier-Bold" size:18];
     [self.menu addSubview:h];
 
+    // --- 9 LAG REDUCTION SETTINGS ---
     [self addOpt:@"Unlock 999 FPS" y:60 sel:@selector(f1:)];
-    [self addOpt:@"Disable Textures" y:100 sel:@selector(f2:)];
+    [self addOpt:@"No Textures" y:100 sel:@selector(f2:)];
     [self addOpt:@"Kill Shadows" y:140 sel:@selector(f3:)];
     [self addOpt:@"Potato Quality" y:180 sel:@selector(f4:)];
-    [self addOpt:@"No Post-Process" y:220 sel:@selector(f5:)];
+    [self addOpt:@"Disable Blur" y:220 sel:@selector(f5:)];
     [self addOpt:@"No Grass/Deco" y:260 sel:@selector(f6:)];
-    [self addOpt:@"Force Metal API" y:300 sel:@selector(f7:)];
-    [self addOpt:@"Optimized UI" y:340 sel:@selector(f8:)];
-    [self addOpt:@"Data Saver" y:380 sel:@selector(f9:)];
+    [self addOpt:@"Force Metal" y:300 sel:@selector(f7:)];
+    [self addOpt:@"Anti-Aliasing Off" y:340 sel:@selector(f8:)];
+    [self addOpt:@"Fast Load" y:380 sel:@selector(f9:)];
 
     UIButton *save = [UIButton buttonWithType:UIButtonTypeSystem];
     save.frame = CGRectMake(30, 430, 200, 40);
     save.backgroundColor = [UIColor systemPurpleColor];
-    [save setTitle:@"APPLY & RESTART" forState:UIControlStateNormal];
+    [save setTitle:@"SAVE & CLOSE" forState:UIControlStateNormal];
     [save setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     save.layer.cornerRadius = 10;
-    [save addTarget:self action:@selector(doExit) forControlEvents:UIControlEventTouchUpInside];
+    [save addTarget:self action:@selector(toggleMenu) forControlEvents:UIControlEventTouchUpInside];
     [self.menu addSubview:save];
 
     [self addSubview:self.menu];
 }
 
+- (void)toggleMenu {
+    BOOL isHidden = (self.menu.alpha == 0);
+    self.menu.hidden = NO;
+    [UIView animateWithDuration:0.3 animations:^{
+        self.menu.alpha = isHidden ? 1.0 : 0.0;
+    } completion:^(BOOL finished) {
+        if (!isHidden) self.menu.hidden = YES;
+    }];
+}
+
+- (void)handlePan:(UIPanGestureRecognizer *)p {
+    self.btn.center = [p locationInView:self];
+}
+
+// 9 FAST FLAGS
 - (void)f1:(UISwitch *)s { [self setFlag:@"DFIntTaskSchedulerTargetFps" v:s.isOn ? @999 : @60]; }
 - (void)f2:(UISwitch *)s { [self setFlag:@"DFFlagDebugDisableOptimizedTextureTarget" v:s.isOn ? @"True" : @"False"]; }
 - (void)f3:(UISwitch *)s { [self setFlag:@"FIntRenderShadowIntensity" v:s.isOn ? @0 : @1]; }
@@ -103,16 +129,14 @@
 - (void)f5:(UISwitch *)s { [self setFlag:@"FFlagDisablePostProcess" v:s.isOn ? @"True" : @"False"]; }
 - (void)f6:(UISwitch *)s { [self setFlag:@"FIntRenderTerrainDecorationPath" v:s.isOn ? @0 : @1]; }
 - (void)f7:(UISwitch *)s { [self setFlag:@"FFlagDebugForceMetal" v:s.isOn ? @"True" : @"False"]; }
-- (void)f8:(UISwitch *)s { [self setFlag:@"FFlagDebugDisableGui" v:s.isOn ? @"True" : @"False"]; }
-- (void)f9:(UISwitch *)s { [self setFlag:@"FIntNetworkMaxPort" v:s.isOn ? @1 : @0]; }
+- (void)f8:(UISwitch *)s { [self setFlag:@"FIntMsaaSampleCount" v:s.isOn ? @0 : @4]; }
+- (void)f9:(UISwitch *)s { [self setFlag:@"FIntFFlagBootstrapperReloadPolicy" v:s.isOn ? @0 : @1]; }
 
-- (void)toggle { [UIView animateWithDuration:0.2 animations:^{ self.menu.alpha = (self.menu.alpha == 0) ? 1 : 0; }]; }
-- (void)pan:(UIPanGestureRecognizer *)p { self.btn.center = [p locationInView:self]; }
-- (void)doExit { exit(0); }
-
+// CRITICAL: Pass taps through to the game unless we hit the UI
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
-    UIView *v = [super hitTest:point withEvent:event];
-    return (v == self) ? nil : v;
+    UIView *hit = [super hitTest:point withEvent:event];
+    if (hit == self) return nil;
+    return hit;
 }
 @end
 
