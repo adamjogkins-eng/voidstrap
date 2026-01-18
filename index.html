@@ -13,85 +13,86 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             text-align: center;
-            overflow: hidden;
         }
         .card {
-            padding: 40px 20px;
+            padding: 30px 20px;
             border-radius: 30px;
             background: rgba(20, 10, 40, 0.95);
             border: 1px solid #4a008f;
             box-shadow: 0 0 50px rgba(123, 44, 191, 0.4);
             width: 85%;
             max-width: 380px;
+            margin: 20px 0;
         }
-        .logo {
-            font-size: 80px;
-            color: #9d4edd;
-            text-shadow: 0 0 20px #7b2cbf;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
-        h1 { 
-            font-size: 28px; 
-            margin: 10px 0; 
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        p { 
-            color: #b79ced; 
-            font-size: 15px; 
-            margin-bottom: 35px;
-            opacity: 0.8;
-        }
+        .logo { font-size: 60px; color: #9d4edd; text-shadow: 0 0 20px #7b2cbf; margin-bottom: 10px; }
+        h1 { font-size: 24px; margin: 5px 0; letter-spacing: 2px; }
+        .tagline { color: #b79ced; font-size: 14px; margin-bottom: 25px; opacity: 0.8; }
+        
+        /* Buttons */
+        .step-box { margin-bottom: 20px; text-align: left; }
+        .step-label { font-size: 12px; font-weight: bold; color: #9d4edd; margin-left: 5px; margin-bottom: 5px; display: block; }
+        
         .btn {
-            background: linear-gradient(135deg, #7b2cbf, #5a189a);
             color: white;
-            padding: 20px 0;
+            padding: 16px 0;
             text-decoration: none;
-            border-radius: 18px;
+            border-radius: 15px;
             font-weight: bold;
-            font-size: 20px;
+            font-size: 17px;
             display: block;
             width: 100%;
-            transition: transform 0.2s, background 0.2s;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transition: transform 0.2s;
+            text-align: center;
         }
-        .btn:active {
-            transform: scale(0.95);
-            background: #9d4edd;
-        }
-        .instructions {
-            margin-top: 30px;
+        .btn-profile { background: #222; border: 1px solid #444; }
+        .btn-install { background: linear-gradient(135deg, #7b2cbf, #5a189a); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .btn:active { transform: scale(0.96); }
+
+        .warning-box {
+            background: rgba(255, 158, 0, 0.1);
+            border: 1px solid #ff9e00;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px;
             font-size: 12px;
-            color: #6a6a8a;
-            line-height: 1.6;
-        }
-        .safari-only {
             color: #ff9e00;
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
         }
+
+        .instructions { font-size: 11px; color: #6a6a8a; line-height: 1.5; margin-top: 15px; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="logo">𝔳</div>
+        <div class="logo">☢️</div>
         <h1>VOIDSTRAP</h1>
-        <p>Nuclear V8 Optimization</p>
-        
-        <a href="itms-services://?action=download-manifest&url=https://adamjogkins-eng.github.io/voidstrap/install.plist" class="btn">
-            INSTALL NOW
-        </a>
+        <p class="tagline">Nuclear V8 Optimization</p>
+
+        <div class="warning-box">
+            ⚠️ <b>ANTI-REVOKE REQUIRED</b><br>
+            Install the WSF Profile first to prevent the app from crashing later.
+        </div>
+
+        <div class="step-box">
+            <span class="step-label">STEP 1: PROTECTION</span>
+            <a href="https://wsf.bio/dns" class="btn btn-profile">
+                GET WSF PROFILE
+            </a>
+        </div>
+
+        <div class="step-box">
+            <span class="step-label">STEP 2: INSTALLATION</span>
+            <a href="itms-services://?action=download-manifest&url=https://adamjogkins-eng.github.io/voidstrap/install.plist" class="btn btn-install">
+                INSTALL VOIDSTRAP
+            </a>
+        </div>
 
         <div class="instructions">
-            <span class="safari-only">USE SAFARI BROWSER</span>
-            Once installed, go to Settings > General > <br>
-            VPN & Device Management to Trust the app.
+            Open this page in <b>Safari</b>.<br>
+            After install: Settings > General > VPN & Device Management > Trust "VoidStrap".
         </div>
     </div>
 
