@@ -35,23 +35,22 @@
 }
 
 - (void)addOpt:(NSString *)txt y:(CGFloat)y sel:(SEL)s {
-    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 160, 30)];
+    UILabel *l = [[UILabel alloc] initWithFrame:CGRectMake(20, y, 170, 30)];
     l.text = [txt uppercaseString];
     l.textColor = [UIColor whiteColor];
     l.font = [UIFont fontWithName:@"Courier-Bold" size:11];
     [self.menu addSubview:l];
 
-    UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(190, y, 0, 0)];
+    UISwitch *sw = [[UISwitch alloc] initWithFrame:CGRectMake(195, y, 0, 0)];
     sw.onTintColor = [UIColor systemPurpleColor];
-    sw.transform = CGAffineTransformMakeScale(0.7, 0.7);
+    sw.transform = CGAffineTransformMakeScale(0.65, 0.65);
     [sw addTarget:self action:s forControlEvents:UIControlEventValueChanged];
     [self.menu addSubview:sw];
 }
 
 - (void)setupUI {
-    // 1. Floating 'v' Button
     self.btn = [[UIButton alloc] initWithFrame:CGRectMake(50, 100, 55, 55)];
-    self.btn.backgroundColor = [UIColor colorWithRed:0.2 green:0.0 blue:0.5 alpha:0.9];
+    self.btn.backgroundColor = [UIColor colorWithRed:0.2 green:0.0 blue:0.4 alpha:0.9];
     self.btn.layer.cornerRadius = 27.5;
     self.btn.layer.borderWidth = 1.5;
     self.btn.layer.borderColor = [UIColor whiteColor].CGColor;
@@ -61,66 +60,62 @@
     [self.btn addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleBtnPan:)]];
     [self addSubview:self.btn];
 
-    // 2. Draggable Main Panel
-    self.menu = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 270, 420)];
+    self.menu = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, 275, 450)];
     self.menu.center = CGPointMake(UIScreen.mainScreen.bounds.size.width/2, UIScreen.mainScreen.bounds.size.height/2);
-    self.menu.backgroundColor = [UIColor colorWithRed:0.01 green:0.01 blue:0.03 alpha:0.98];
-    self.menu.layer.cornerRadius = 12;
+    self.menu.backgroundColor = [UIColor colorWithRed:0.01 green:0.01 blue:0.02 alpha:0.98];
+    self.menu.layer.cornerRadius = 15;
     self.menu.layer.borderColor = [UIColor systemPurpleColor].CGColor;
     self.menu.layer.borderWidth = 2;
     self.menu.alpha = 0;
     self.menu.hidden = YES;
-    self.menu.contentSize = CGSizeMake(270, 700);
+    self.menu.contentSize = CGSizeMake(275, 750);
 
-    // Header (The drag handle)
-    self.header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 270, 45)];
+    self.header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 275, 45)];
     self.header.backgroundColor = [UIColor colorWithRed:0.1 green:0.0 blue:0.2 alpha:1.0];
     UILabel *hLabel = [[UILabel alloc] initWithFrame:self.header.bounds];
-    hLabel.text = @"VOIDSTRAP ADMIN V3";
+    hLabel.text = @"VOIDSTRAP OPTIMIZER V4";
     hLabel.textAlignment = NSTextAlignmentCenter;
     hLabel.textColor = [UIColor whiteColor];
-    hLabel.font = [UIFont fontWithName:@"Courier-Bold" size:16];
+    hLabel.font = [UIFont fontWithName:@"Courier-Bold" size:14];
     [self.header addSubview:hLabel];
-    
-    UIPanGestureRecognizer *menuPan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenuPan:)];
-    [self.header addGestureRecognizer:menuPan];
+    [self.header addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleMenuPan:)]];
     [self.menu addSubview:self.header];
 
-    // --- 9 LAG REDUCTION (Existing) ---
+    // --- Original 9 Performance ---
     CGFloat startY = 60;
-    [self addOpt:@"FPS Unlock" y:startY sel:@selector(f1:)];
-    [self addOpt:@"No Textures" y:startY+35 sel:@selector(f2:)];
-    [self addOpt:@"No Shadows" y:startY+70 sel:@selector(f3:)];
-    [self addOpt:@"Potato Mode" y:startY+105 sel:@selector(f4:)];
-    [self addOpt:@"No Blur" y:startY+140 sel:@selector(f5:)];
-    [self addOpt:@"No Deco" y:startY+175 sel:@selector(f6:)];
-    [self addOpt:@"Metal API" y:startY+210 sel:@selector(f7:)];
-    [self addOpt:@"No AA" y:startY+245 sel:@selector(f8:)];
-    [self addOpt:@"Fast Load" y:startY+280 sel:@selector(f9:)];
+    [self addOpt:@"FPS Unlock (999)" y:startY sel:@selector(f1:)];
+    [self addOpt:@"Disable Textures" y:startY+35 sel:@selector(f2:)];
+    [self addOpt:@"Disable Shadows" y:startY+70 sel:@selector(f3:)];
+    [self addOpt:@"Low Render Level" y:startY+105 sel:@selector(f4:)];
+    [self addOpt:@"Disable Post-Proc" y:startY+140 sel:@selector(f5:)];
+    [self addOpt:@"Disable Deco" y:startY+175 sel:@selector(f6:)];
+    [self addOpt:@"Force Metal API" y:startY+210 sel:@selector(f7:)];
+    [self addOpt:@"No Anti-Aliasing" y:startY+245 sel:@selector(f8:)];
+    [self addOpt:@"Fast Load Logic" y:startY+280 sel:@selector(f9:)];
 
-    // --- 6 NEW ADMIN FEATURES ---
+    // --- 6 NEW Advanced Optimization ---
     startY = 385;
-    UILabel *adminLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, startY-30, 270, 20)];
-    adminLabel.text = @"--- ADMIN UTILS ---";
-    adminLabel.textAlignment = NSTextAlignmentCenter; adminLabel.textColor = [UIColor systemPurpleColor];
-    adminLabel.font = [UIFont boldSystemFontOfSize:12];
-    [self.menu addSubview:adminLabel];
+    UILabel *advLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, startY-30, 275, 20)];
+    advLabel.text = @"--- ADVANCED BOOST ---";
+    advLabel.textAlignment = NSTextAlignmentCenter; advLabel.textColor = [UIColor systemPurpleColor];
+    advLabel.font = [UIFont boldSystemFontOfSize:11];
+    [self.menu addSubview:advLabel];
 
-    [self addOpt:@"FullBright (ESP)" y:startY sel:@selector(a1:)];
-    [self addOpt:@"Extreme FOV" y:startY+35 sel:@selector(a2:)];
-    [self addOpt:@"High JumpPower" y:startY+70 sel:@selector(a3:)];
-    [self addOpt:@"Instant Respawn" y:startY+105 sel:@selector(a4:)];
-    [self addOpt:@"Unlimited Zoom" y:startY+140 sel:@selector(a5:)];
-    [self addOpt:@"Force Voxel" y:startY+175 sel:@selector(a6:)];
+    [self addOpt:@"Low Res Scale" y:startY sel:@selector(b1:)];
+    [self addOpt:@"Kill Part Physics" y:startY+35 sel:@selector(b2:)];
+    [self addOpt:@"Disable Shaders" y:startY+70 sel:@selector(b3:)];
+    [self addOpt:@"Min Mesh Detail" y:startY+105 sel:@selector(b4:)];
+    [self addOpt:@"Aggressive GC" y:startY+140 sel:@selector(b5:)];
+    [self addOpt:@"Pre-Load Stream" y:startY+175 sel:@selector(b6:)];
 
     [self addSubview:self.menu];
 }
 
-// DRAG LOGIC
+// Draggable Handlers
 - (void)handleBtnPan:(UIPanGestureRecognizer *)p { self.btn.center = [p locationInView:self]; }
 - (void)handleMenuPan:(UIPanGestureRecognizer *)p {
-    CGPoint translation = [p translationInView:self];
-    self.menu.center = CGPointMake(self.menu.center.x + translation.x, self.menu.center.y + translation.y);
+    CGPoint trans = [p translationInView:self];
+    self.menu.center = CGPointMake(self.menu.center.x + trans.x, self.menu.center.y + trans.y);
     [p setTranslation:CGPointZero inView:self];
 }
 
@@ -130,7 +125,7 @@
     [UIView animateWithDuration:0.2 animations:^{ self.menu.alpha = show ? 1.0 : 0.0; } completion:^(BOOL f){ if(!show) self.menu.hidden = YES; }];
 }
 
-// FLAG HANDLERS (9 Performance)
+// Original 9
 - (void)f1:(UISwitch *)s { [self setFlag:@"DFIntTaskSchedulerTargetFps" v:s.isOn ? @999 : @60]; }
 - (void)f2:(UISwitch *)s { [self setFlag:@"DFFlagDebugDisableOptimizedTextureTarget" v:s.isOn ? @"True" : @"False"]; }
 - (void)f3:(UISwitch *)s { [self setFlag:@"FIntRenderShadowIntensity" v:s.isOn ? @0 : @1]; }
@@ -141,13 +136,13 @@
 - (void)f8:(UISwitch *)s { [self setFlag:@"FIntMsaaSampleCount" v:s.isOn ? @0 : @4]; }
 - (void)f9:(UISwitch *)s { [self setFlag:@"FIntFFlagBootstrapperReloadPolicy" v:s.isOn ? @0 : @1]; }
 
-// FLAG HANDLERS (6 Admin)
-- (void)a1:(UISwitch *)s { [self setFlag:@"FFlagDebugDisplayUntrackedMemory" v:s.isOn ? @"True" : @"False"]; } 
-- (void)a2:(UISwitch *)s { [self setFlag:@"FIntCameraMaxFOV" v:s.isOn ? @120 : @70]; }
-- (void)a3:(UISwitch *)s { [self setFlag:@"FIntCharacterJumpPowerOption" v:s.isOn ? @100 : @50]; }
-- (void)a4:(UISwitch *)s { [self setFlag:@"FIntRespawnTimeForce" v:s.isOn ? @0 : @3]; }
-- (void)a5:(UISwitch *)s { [self setFlag:@"FIntCameraMaxZoomDistance" v:s.isOn ? @9999 : @400]; }
-- (void)a6:(UISwitch *)s { [self setFlag:@"DFFlagDebugRenderForceVoxel" v:s.isOn ? @"True" : @"False"]; }
+// New 6 Optimization Tools
+- (void)b1:(UISwitch *)s { [self setFlag:@"FIntDebugImageSlowerResolution" v:s.isOn ? @1 : @0]; }
+- (void)b2:(UISwitch *)s { [self setFlag:@"FFlagDisableNewPhysicsSolver" v:s.isOn ? @"True" : @"False"]; }
+- (void)b3:(UISwitch *)s { [self setFlag:@"FFlagDebugForceShadersAllOff" v:s.isOn ? @"True" : @"False"]; }
+- (void)b4:(UISwitch *)s { [self setFlag:@"FIntRenderMeshLOD" v:s.isOn ? @0 : @100]; }
+- (void)b5:(UISwitch *)s { [self setFlag:@"FIntDebugForceGC" v:s.isOn ? @1 : @0]; }
+- (void)b6:(UISwitch *)s { [self setFlag:@"FFlagPreloadAllModels" v:s.isOn ? @"True" : @"False"]; }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event {
     UIView *hit = [super hitTest:point withEvent:event];
