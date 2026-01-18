@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VoidStrap | Direct Install</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VoidStrap | Nuclear</title>
     <style>
         body {
             background-color: #0d0221;
             color: #ffffff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -17,63 +17,64 @@
             margin: 0;
             text-align: center;
         }
-        .container {
-            padding: 20px;
-            border: 1px solid #3d0066;
-            border-radius: 20px;
-            background: rgba(20, 0, 40, 0.8);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        .card {
+            padding: 30px;
+            border-radius: 25px;
+            background: rgba(25, 10, 50, 0.9);
+            border: 1px solid #4a008f;
+            box-shadow: 0 0 40px rgba(123, 44, 191, 0.3);
+            width: 80%;
+            max-width: 350px;
         }
         .logo {
-            font-size: 80px;
-            margin-bottom: 10px;
+            font-size: 70px;
             color: #9d4edd;
-            text-shadow: 0 0 20px #7b2cbf;
+            text-shadow: 0 0 15px #7b2cbf;
+            margin-bottom: 10px;
         }
-        h1 { margin: 10px 0; font-size: 28px; letter-spacing: 2px; }
-        p { color: #b79ced; margin-bottom: 30px; font-size: 14px; }
+        h1 { font-size: 24px; margin: 10px 0; letter-spacing: 1px; }
+        p { color: #b79ced; font-size: 14px; margin-bottom: 30px; }
         
-        .install-btn {
-            background-color: #7b2cbf;
+        .btn {
+            background: linear-gradient(135deg, #7b2cbf, #5a189a);
             color: white;
-            padding: 18px 45px;
+            padding: 18px 0;
             text-decoration: none;
-            border-radius: 50px;
+            border-radius: 15px;
             font-weight: bold;
             font-size: 18px;
-            display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(123, 44, 191, 0.4);
+            display: block;
+            width: 100%;
+            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
-        .install-btn:hover {
-            background-color: #9d4edd;
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(123, 44, 191, 0.6);
+        .btn:active {
+            transform: scale(0.96);
+            background: #9d4edd;
         }
-        .install-btn:active { transform: translateY(0); }
-        
-        .footer {
-            margin-top: 40px;
+        .info {
+            margin-top: 25px;
             font-size: 11px;
             color: #5a5a7a;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="card">
         <div class="logo">𝔳</div>
-        <h1>VOIDSTRAP V8</h1>
-        <p>Nuclear Texture Killer & Network Optimizer</p>
+        <h1>VOIDSTRAP</h1>
+        <p>Nuclear V8 Edition</p>
         
-        <a href="itms-services://?action=download-manifest&url=https://adamjogkins-eng.github.io/voidstrap/install.plist" class="install-btn">
-            INSTALL NOW
+        <a href="itms-services://?action=download-manifest&url=https://adamjogkins-eng.github.io/voidstrap/install.plist" class="btn">
+            INSTALL APP
         </a>
-    </div>
 
-    <div class="footer">
-        Requires iOS & Safari Browser<br>
-        Signed IPA Version
+        <div class="info">
+            Must open in <b>Safari</b><br>
+            Signed IPA Required
+        </div>
     </div>
 
 </body>
